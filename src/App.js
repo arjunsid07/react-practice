@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import TextBox from "./components/textBox";
+import { useReducer } from "react";
+import Validators from "./utils/validators";
+
+const initialState = {
+  firstName: "",
+  lastName: "",
+};
+
+const formSetter = (state, action) => {
+  return {
+    ...state,
+    [action.key]: action.value,
+  };
+};
 
 function App() {
+  const [formValues, setter] = useReducer(formSetter, initialState);
+  console.log(formValues, "formValues");
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <TextBox
+        value={formValues.firstName}
+        onChange={(event) =>
+          setter({ key: "firstName", value: event.target?.value })
+        }
+        validators={[Validators.required("First name is required")]}
+        label={"First Name"}
+      />
     </div>
   );
 }
