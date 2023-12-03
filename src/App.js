@@ -1,36 +1,19 @@
-import logo from "./logo.svg";
 import "./App.css";
-import TextBox from "./components/textBox";
-import { useReducer } from "react";
-import Validators from "./utils/validators";
-
-const initialState = {
-  firstName: "",
-  lastName: "",
-};
-
-const formSetter = (state, action) => {
-  return {
-    ...state,
-    [action.key]: action.value,
-  };
-};
-
+import withRouteContainer from "./infra/routeMatcher";
+import { Link } from "react-router-dom";
+import Form from "./components/form/form";
+import PersonForm from "./PersonForm";
 function App() {
-  const [formValues, setter] = useReducer(formSetter, initialState);
-  console.log(formValues, "formValues");
+  const onSubmit = (values) => {
+    console.log(values);
+  };
   return (
     <div>
-      <TextBox
-        value={formValues.firstName}
-        onChange={(event) =>
-          setter({ key: "firstName", value: event.target?.value })
-        }
-        validators={[Validators.required("First name is required")]}
-        label={"First Name"}
-      />
+      <Form onSubmit={onSubmit}>
+        <PersonForm />
+      </Form>
     </div>
   );
 }
 
-export default App;
+export default withRouteContainer(App);
